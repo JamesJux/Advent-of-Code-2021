@@ -108,9 +108,52 @@ def tag2015_4(aufgabenteil):
             return idx
         idx += 1
 
+def enoughVowles(line):
+    vowels = {'a', 'e', 'i', 'o', 'u'}
+    number_of_vowels = 0
+    for idx in range(0, len(line)):
+        if line[idx] in vowels:
+            number_of_vowels += 1
+    return number_of_vowels >= 3
+
+
+def doubleCharacter(line):
+    last = line[0]
+    for idx in range(1, len(line)):
+        if last == line[idx]:
+            return True
+        last = line[idx]
+    return False
+
+
+def schoenerString(line):
+    naghty_strings = {'ab', 'cd', 'pq', 'xy'}
+    for substring in naghty_strings:
+        if substring in line:
+            return False
+    return True
+
+
+def tag2015_5(aufgabenteil):
+    inputpath = "inputs/input_2015_5.txt"
+    lines = openAsList(inputpath)
+    #lines = ["jchzalrnumimnmhp", "haegwjzuvuyypxyu", "dvszwmarrgswjxmb", "aaa"]
+    nice_strings = 0
+    for line in lines:
+        vowels = enoughVowles(line)
+        double = doubleCharacter(line)
+        schoen = schoenerString(line)
+
+        if vowels and double and schoen:
+            nice_strings += 1
+    return nice_strings
+
+
+
+    return nice_strings
 
 if __name__ == '__main__':
-    ergebnis = tag2015_4('b')
+    ergebnis = tag2015_5('b')
     print(ergebnis)
     pyperclip.copy(ergebnis)
 
