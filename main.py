@@ -149,11 +149,119 @@ def tag2015_5(aufgabenteil):
     return nice_strings
 
 
+def getLampenfromTupel(line_from, line_to):
+    print(line_from)
+    print(line_to)
+    from_tupel = line_from.split(',')
+    from_tupel[0] = int(from_tupel[0])
+    from_tupel[1] = int(from_tupel[1])
+    to_tupel = line_to.split(',')
+    to_tupel[0] = int(to_tupel[0])
+    to_tupel[1] = int(to_tupel[1])
 
-    return nice_strings
+    #print(from_tupel)
+    #print(to_tupel)
+
+    lampen = []
+    for idx in range(from_tupel[0], to_tupel[0]+1):
+        for jdx in range(from_tupel[1], to_tupel[1]+1):
+            #print("idx:{}, jdx:{}".format(idx, jdx))
+            index = idx*1000 + jdx
+            #print(index)
+            lampen.append(index)
+    return lampen
+
+
+def schalte_an(gesammtlampen, lampen):
+    for lampe in lampen:
+        gesammtlampen[lampe] = True
+    return gesammtlampen
+
+
+def schalte_aus(gesammtlampen, lampen):
+    for lampe in lampen:
+        gesammtlampen[lampe] = False
+    return gesammtlampen
+
+
+def schalte(gesammtlampen, lampen):
+    for lampe in lampen:
+        gesammtlampen[lampe] = not gesammtlampen[lampe]
+    return gesammtlampen
+
+
+def tag2015_6_a():
+    inputpath = "inputs/input_2015_6.txt"
+    lines = openAsList(inputpath)
+    #lines = ["turn on 887,9 through 959,629","turn on 454,398 through 844,448","turn off 539,243 through 559,965"]
+    gesammtlampen = [False] * 1000*1000
+
+    for line in lines:
+        print(line)
+        line = line.split(' ')
+        if line[0] == "turn":
+            lampen = getLampenfromTupel(line[2], line[4])
+            if line[1] == "on":
+                gesammtlampen = schalte_an(gesammtlampen, lampen)
+            else:
+                gesammtlampen = schalte_aus(gesammtlampen, lampen)
+        elif line[0] == "toggle":
+            lampen = getLampenfromTupel(line[1], line[3])
+            gesammtlampen = schalte(gesammtlampen, lampen)
+    ergebnis = 0
+    for lampe in gesammtlampen:
+        if lampe:
+            ergebnis += 1
+    return ergebnis
+
+def schalte_an_b(gesammtlampen, lampen):
+    for lampe in lampen:
+        gesammtlampen[lampe] += 1
+    return gesammtlampen
+
+
+def schalte_aus_b(gesammtlampen, lampen):
+    for lampe in lampen:
+        gesammtlampen[lampe] -= 1
+        if gesammtlampen[lampe] < 0:
+            gesammtlampen[lampe] = 0
+    return gesammtlampen
+
+
+def schalte_b(gesammtlampen, lampen):
+    for lampe in lampen:
+        gesammtlampen[lampe] += 2
+    return gesammtlampen
+
+
+def tag2015_6_b():
+    inputpath = "inputs/input_2015_6.txt"
+    lines = openAsList(inputpath)
+    #lines = ["turn on 887,9 through 959,629","turn on 454,398 through 844,448","turn off 539,243 through 559,965"]
+    gesammtlampen = [0] * 1000*1000
+
+    for line in lines:
+        print(line)
+        line = line.split(' ')
+        if line[0] == "turn":
+            lampen = getLampenfromTupel(line[2], line[4])
+            if line[1] == "on":
+                gesammtlampen = schalte_an_b(gesammtlampen, lampen)
+            else:
+                gesammtlampen = schalte_aus_b(gesammtlampen, lampen)
+        elif line[0] == "toggle":
+            lampen = getLampenfromTupel(line[1], line[3])
+            gesammtlampen = schalte_b(gesammtlampen, lampen)
+    ergebnis = 0
+    for lampe in gesammtlampen:
+        ergebnis += lampe
+    return ergebnis
+
+
+
 
 if __name__ == '__main__':
-    ergebnis = tag2015_5('b')
+    ergebnis = tag2015_6_b()
     print(ergebnis)
     pyperclip.copy(ergebnis)
 
