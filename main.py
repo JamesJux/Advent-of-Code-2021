@@ -1,3 +1,7 @@
+import hashlib
+import sys
+from _md5 import md5
+
 import pyperclip
 
 from help_methods import openAsString, openAsList
@@ -40,6 +44,7 @@ def tag2015_2(aufgabenteil):
         return gesammtPapier
     else:
         return gesammtBand
+
 
 def tag2015_3(aufgabenteil):
     inputpath = "inputs/input_2015_3.txt"
@@ -89,9 +94,23 @@ def tag2015_3(aufgabenteil):
     return len(set(besuchte_hauser))
 
 
+def tag2015_4(aufgabenteil):
+    secret_key = "yzbqklnj"
+    idx = 0
+    while 1:
+        key = secret_key+str(idx)
+        md5_string = hashlib.md5(key.encode('utf-8')).hexdigest()
+        if idx % 1000000 ==0:
+            print(idx)
+        if aufgabenteil == 'a' and md5_string[0:5] == "00000":
+            return idx
+        if aufgabenteil == 'b' and md5_string[0:6] == "000000":
+            return idx
+        idx += 1
+
 
 if __name__ == '__main__':
-    ergebnis = tag2015_3('b')
+    ergebnis = tag2015_4('b')
     print(ergebnis)
-    #pyperclip.copy(ergebnis)
+    pyperclip.copy(ergebnis)
 
