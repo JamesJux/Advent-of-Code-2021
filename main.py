@@ -134,18 +134,43 @@ def schoenerString(line):
     return True
 
 
+def isOneLetterBetween(line):
+    if line[0] == line[2]:
+        return True
+    if len(line) == 3:
+        return False
+    else:
+        return isOneLetterBetween(line[1:])
+
+
+def isPairTwice(line):
+    if line[0:2] in line[2:]:
+        return True
+    if len(line) == 3:
+        return False
+    else:
+        return isPairTwice(line[1:])
+
+
 def tag2015_5(aufgabenteil):
     inputpath = "inputs/input_2015_5.txt"
     lines = openAsList(inputpath)
-    #lines = ["jchzalrnumimnmhp", "haegwjzuvuyypxyu", "dvszwmarrgswjxmb", "aaa"]
+    #lines = ["qjhvhtzxzqqjkmpb", "xxyxx", "uurcxstgmygtbstg", "ieodomkazucvgmuy"]
     nice_strings = 0
     for line in lines:
-        vowels = enoughVowles(line)
-        double = doubleCharacter(line)
-        schoen = schoenerString(line)
+        if aufgabenteil == 'a':
+            vowels = enoughVowles(line)
+            double = doubleCharacter(line)
+            schoen = schoenerString(line)
 
-        if vowels and double and schoen:
-            nice_strings += 1
+            if vowels and double and schoen:
+                nice_strings += 1
+        else:
+            pair_twice = isPairTwice(line)
+            oneletterbetween = isOneLetterBetween(line)
+
+            if pair_twice and oneletterbetween:
+                nice_strings += 1
     return nice_strings
 
 
@@ -261,7 +286,7 @@ def tag2015_6_b():
 
 
 if __name__ == '__main__':
-    ergebnis = tag2015_6_b()
+    ergebnis = tag2015_5('b')
     print(ergebnis)
     pyperclip.copy(ergebnis)
 
