@@ -1,6 +1,4 @@
 import hashlib
-import sys
-from _md5 import md5
 
 import pyperclip
 
@@ -108,6 +106,7 @@ def tag2015_4(aufgabenteil):
             return idx
         idx += 1
 
+
 def enoughVowles(line):
     vowels = {'a', 'e', 'i', 'o', 'u'}
     number_of_vowels = 0
@@ -184,15 +183,10 @@ def getLampenfromTupel(line_from, line_to):
     to_tupel[0] = int(to_tupel[0])
     to_tupel[1] = int(to_tupel[1])
 
-    #print(from_tupel)
-    #print(to_tupel)
-
     lampen = []
     for idx in range(from_tupel[0], to_tupel[0]+1):
         for jdx in range(from_tupel[1], to_tupel[1]+1):
-            #print("idx:{}, jdx:{}".format(idx, jdx))
             index = idx*1000 + jdx
-            #print(index)
             lampen.append(index)
     return lampen
 
@@ -239,6 +233,7 @@ def tag2015_6_a():
             ergebnis += 1
     return ergebnis
 
+
 def schalte_an_b(gesammtlampen, lampen):
     for lampe in lampen:
         gesammtlampen[lampe] += 1
@@ -283,10 +278,92 @@ def tag2015_6_b():
     return ergebnis
 
 
+def isWire(wire, wires):
+    try:
+        kabel = wires[wire]
+        return True
+    except KeyError:
+        return False
+
+
+def isWireAlreadyExist(wires, line):
+    array = line.split(' ')
+    array = array[:-1]
+    if array[1] == "->":
+        return isWire(array[0], wires) or array[0].isdigit()
+    if array[1] in {"AND", "OR"}:
+        one = isWire(array[0], wires) and isWire(array[2], wires)
+        two = array[0].isdigit() and isWire(array[2], wires)
+        return one or two
+    if array[1] in {"LSHIFT", "RSHIFT"}:
+        return isWire(array[0], wires)
+    if array[0] == "NOT":
+        return isWire(array[1], wires)
+
+
+def calc(line, wires):
+    array = line.split(' ')
+    if "AND" in line:
+        # x AND y -> d
+        if array[0].isdigit():
+            zahl = int(array[0])
+        else:
+            zahl = wires[array[0]]
+        wires[array[4]] = zahl & wires[array[2]]
+    elif "OR" in line:
+        # x OR y -> e
+        wires[array[4]] = wires[array[0]] | wires[array[2]]
+    elif "LSHIFT" in line:
+        # x LSHIFT 2 -> f
+        zahl2 = int(array[2])
+        wires[array[4]] = wires[array[0]] << zahl2
+    elif "RSHIFT" in line:
+        # y RSHIFT 2 -> g
+        zahl2 = int(array[2])
+        wires[array[4]] = wires[array[0]] >> zahl2
+    elif "NOT" in line:
+        # NOT x -> h
+        # 0xffff -> 65535 als integer (2^16)
+        wires[array[3]] = wires[array[1]] ^ 65535
+    elif "->" in array[1]:
+        # 123 -> x
+        # lx -> c
+        if array[0].isdigit():
+            zahl = int(array[0])
+        else:
+            zahl = wires[array[0]]
+        wires[array[2]] = zahl
+
+
+def tag2015_7_a():
+    from queue import Queue
+    inputpath = "inputs/input_2015_7_a.txt"
+    lines_list = openAsList(inputpath)
+    # lines_list = ["456 -> y", "x AND y -> d", "x OR y -> e", "x LSHIFT 2 -> f", "y RSHIFT 2 -> g", "NOT x -> h",
+    #       "NOT y -> i", "123 -> x"]
+
+    lines = Queue()
+    for line in lines_list:
+        lines.put(line)
+
+    wires = {}
+    while not lines.empty():
+        line = lines.get()
+        if isWireAlreadyExist(wires, line):
+            print(line)
+            calc(line, wires)
+        else:
+            lines.put(line)
+    return wires["a"]
+
+
+def tag2015_7_b():
+    # Ich habe die abarbeitsfähigen und sortierten Anweisungen kopiert und die Anweisung "b" einen Wert zuweisen
+    # mit dem Ergebnis aus Aufgabenteil a überschrieben.
+    pass
 
 
 if __name__ == '__main__':
-    ergebnis = tag2015_5('b')
+    ergebnis = tag2015_7_a()
     print(ergebnis)
     pyperclip.copy(ergebnis)
-
