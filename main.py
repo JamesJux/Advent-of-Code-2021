@@ -363,7 +363,70 @@ def tag2015_7_b():
     pass
 
 
+def tag2015_8(aufgabenteil):
+    inputpath = "inputs/input_2015_8.txt"
+    lines_list = openAsList(inputpath)
+    #lines_list = ["sjdivfriyaaqa\xd2v\"k\"mpcu\"yyu\"en", "ciagc\x04bp", "c"]
+    memory_space = 0
+    for line in lines_list:
+        chars = len(line)
+        #print("aktuell hinten:count:{}, length:{}".format(chars, memory_space))
+        print("{}, length:{}".format(line, chars))
+        memory_space += chars
+
+    code_length = 0
+
+    datei = open(inputpath, 'rb')
+    count = 0
+    line = ""
+    while 1:
+        char = datei.read(1)  # read by character
+        if not char:
+            break
+
+        if char == b'\n':
+            count = 0
+            line = ""
+        elif char == b'\r':
+            count -= 2
+            #print("aktuell vorne:line: {}, count:{}, length:{}".format(line[4:-4], count, code_length))
+            print("{}, count:{}".format(line[4:-4], count))
+            code_length += count
+            count = 0
+            line = ""
+        else:
+            if char == b'\\':
+                count += 1
+                char = datei.read(1)
+                if char == b'"':
+                    line = line + str(char)
+                elif char == b'x':
+                    datei.read(1)
+                    datei.read(1)
+                elif char == b'\\':
+                    line = line + str(char)
+                else:
+                    print("char: {}".format(char))
+            else:
+                count += 1
+                line = line + str(char)
+
+    datei.close()
+
+    encoded_space = 0
+    for line in lines_list:
+        anzahl = line.count("\"") + line.count("\\") + 2
+        chars = len(line) + anzahl
+        # print("aktuell hinten:count:{}, length:{}".format(chars, memory_space))
+        print("{}, length:{}".format(line, chars))
+        encoded_space += chars
+
+    if aufgabenteil == 'a':
+        return memory_space - code_length
+    else:
+        return encoded_space - memory_space
+
 if __name__ == '__main__':
-    ergebnis = tag2015_7_a()
+    ergebnis = tag2015_8()
     print(ergebnis)
     pyperclip.copy(ergebnis)
