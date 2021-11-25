@@ -448,8 +448,99 @@ def tag2015_10(input, restIteration):
         return tag2015_10(output, restIteration - 1)
 
 
+def toArray(passwort):
+    output = []
+    for char in passwort:
+        output.append(ord(char))
+    return output
+
+
+def toString(passwort):
+    output = ""
+    for idx in passwort:
+        output = "{}{}".format(output, chr(idx))
+    return output
+
+
+def increasing_straight(pw):
+    for idx in range(0, len(pw)-3):
+        if pw[idx] == pw[idx+1]-1 == pw[idx+2]-2:
+            return True
+    return False
+
+
+def IOL_frei(passwort_array):
+    passwort = toString(passwort_array)
+    if passwort.__contains__("i"):
+        return False
+    elif passwort.__contains__("o"):
+        return False
+    elif passwort.__contains__("l"):
+        return False
+    else:
+        return True
+
+
+def enough_pairs(passwort_array):
+    pairs = 0
+    count = 1
+    for jdx in range(0, len(passwort_array) - 1):
+        if passwort_array[jdx] == passwort_array[jdx + 1]:
+            count += 1
+            if count == 4:
+                return True
+            if count == 2:
+                pairs += 1
+        else:
+            count = 1
+    if pairs >= 2:
+        return True
+    else:
+        return False
+
+
+def behandeleOverflow(array):
+    while ord('z')+1 in array:
+        idx = array.index(ord("z")+1)
+        array[idx-1] += 1
+        array[idx] = 97
+    return array
+
+def erhoehe_Array(passwort_array):
+    passwort_array[7] += 1
+    passwort_array = behandeleOverflow(passwort_array)
+    return passwort_array
+
+
+def bedingungen_erfuellt(passwort_array):
+    return increasing_straight(passwort_array) and IOL_frei(passwort_array) and enough_pairs(passwort_array)
+
+
+def tag2015_11(aufgabenteil):
+    anfangspasswort = "hepxcrrq"
+    passwort_array = toArray(anfangspasswort)
+    bedingungen = bedingungen_erfuellt(passwort_array)
+
+    while not bedingungen:
+        passwort_array = erhoehe_Array(passwort_array)
+        bedingungen = bedingungen_erfuellt(passwort_array)
+
+    if aufgabenteil == 'a':
+        return toString(passwort_array)
+
+    passwort_array = erhoehe_Array(passwort_array)
+    bedingungen = bedingungen_erfuellt(passwort_array)
+
+    while not bedingungen:
+        passwort_array = erhoehe_Array(passwort_array)
+        bedingungen = bedingungen_erfuellt(passwort_array)
+    #start: hepxcrrq
+    #a: hepxxyzz
+    #b: heqaabcc
+    return toString(passwort_array)
+
+
 if __name__ == '__main__':
-    ergebnis = tag2015_10("3113322113", 39)
-    ergebnis = tag2015_10("3113322113", 49)
+    ergebnis = tag2015_11("b")
     print(ergebnis)
     pyperclip.copy(ergebnis)
