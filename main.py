@@ -426,7 +426,30 @@ def tag2015_8(aufgabenteil):
     else:
         return encoded_space - memory_space
 
+
+def tag2015_9():
+    pass
+
+
+def tag2015_10(input, restIteration):
+    output = ''
+    count = 1
+    for jdx in range(0, len(input) - 1):
+        if input[jdx] == input[jdx + 1]:
+            count += 1
+        else:
+            output = output + "{}{}".format(count, input[jdx])
+            count = 1
+    output = output + "{}{}".format(count, input[-1])
+
+    if restIteration == 0:
+        return len(output)
+    else:
+        return tag2015_10(output, restIteration - 1)
+
+
 if __name__ == '__main__':
-    ergebnis = tag2015_8()
+    ergebnis = tag2015_10("3113322113", 39)
+    ergebnis = tag2015_10("3113322113", 49)
     print(ergebnis)
     pyperclip.copy(ergebnis)
