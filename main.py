@@ -534,13 +534,51 @@ def tag2015_11(aufgabenteil):
     while not bedingungen:
         passwort_array = erhoehe_Array(passwort_array)
         bedingungen = bedingungen_erfuellt(passwort_array)
-    #start: hepxcrrq
-    #a: hepxxyzz
-    #b: heqaabcc
+    # start: hepxcrrq
+    # a: hepxxyzz
+    # b: heqaabcc
     return toString(passwort_array)
 
 
+def tag2015_12():
+    import json
+    inputpath = "inputs/input_2015_12.txt"
+    datei = open(inputpath, 'r')
+    test = json.load(datei)
+    print(json.dumps(test, sort_keys=True, indent=4))
+    print(type(test))
+
+
+def tag2021_1_a():
+    inputpath = "inputs/input_2021_1.txt"
+    lines_list = openAsList(inputpath)
+    #lines_list = ["189", "190", "199", "197", "200", "201", "199", "216", "224", "239", "243", "236", "235", "236"]
+    larger = 0
+    letzte = int(lines_list[0])
+    for line in lines_list:
+        zahl = int(line)
+        if zahl > letzte:
+            larger += 1
+        letzte = int(line)
+
+    return larger
+
+def tag2021_1_b():
+    inputpath = "inputs/input_2021_1.txt"
+    lines_list = openAsList(inputpath)
+    #lines_list = ["189", "190", "199", "197", "200", "201", "199", "216", "224", "239", "243", "236", "235", "236"]
+    increased = 0
+    letzte = int(lines_list[0])
+    for idx in range(0, len(lines_list)-3):
+        summe = int(lines_list[idx]) + int(lines_list[idx+1])+int(lines_list[idx+2])
+        if summe > letzte:
+            increased += 1
+        letzte = summe
+
+    return increased
+
+
 if __name__ == '__main__':
-    ergebnis = tag2015_11("b")
+    ergebnis = tag2021_1_b()
     print(ergebnis)
     pyperclip.copy(ergebnis)
