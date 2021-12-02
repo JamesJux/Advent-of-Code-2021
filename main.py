@@ -577,8 +577,39 @@ def tag2021_1_b():
 
     return increased
 
+def tag2021_2(aufgabenteil):
+    inputpath = "inputs/input_2021_2.txt"
+    lines_list = openAsList(inputpath)
+    lines_list = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
+    x_achse = 0
+    y_achse = 0
+    aim = 0
+
+    if aufgabenteil == 'a':
+        for line in lines_list:
+            tupel = line.split()
+            if tupel[0] == "forward":
+                x_achse += int(tupel[1])
+            elif tupel[0] == "down":
+                y_achse += int(tupel[1])
+            elif tupel[0] == "up":
+                y_achse -= int(tupel[1])
+        return x_achse * y_achse
+    else:
+        for line in lines_list:
+            tupel = line.split()
+            if tupel[0] == "forward":
+                x_achse += int(tupel[1])
+                y_achse += aim * int(tupel[1])
+            elif tupel[0] == "down":
+                aim += int(tupel[1])
+            elif tupel[0] == "up":
+                aim -= int(tupel[1])
+            #print("x:{}, y:{}, aim:{}".format(x_achse, y_achse, aim))
+        return x_achse * y_achse
+
 
 if __name__ == '__main__':
-    ergebnis = tag2021_1_b()
+    ergebnis = tag2021_2('b')
     print(ergebnis)
     pyperclip.copy(ergebnis)
