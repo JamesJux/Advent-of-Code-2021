@@ -6,6 +6,7 @@ def openAsList(filepath):
     datei.close()
     return output
 
+
 def openAsString(filepath):
     datei = open(filepath, 'r')
     for zeile in datei:
