@@ -55,3 +55,102 @@ def tag2021_2(aufgabenteil):
                 aim -= int(tupel[1])
             # print("x:{}, y:{}, aim:{}".format(x_achse, y_achse, aim))
         return x_achse * y_achse
+
+
+def tag2021_3(aufgabenteil):
+    if aufgabenteil == 'a':
+        return tag2021_3_a()
+    else:
+        return tag2021_3_b()
+
+
+def findBit_a(lineList, position, common):
+    nullen = 0
+    einsen = 0
+    for line in lineList:
+        if line[position] == "1":
+            einsen += 1
+        else:
+            nullen += 1
+
+    if common: # gibt das häufiger vertretene Bit aus
+        if einsen >= nullen:
+            return b'1'
+        else:
+            return b'0'
+    else: # gibt das weniger vertretene Bit aus
+        if einsen >= nullen:
+            return b'0'
+        else:
+            return b'1'
+
+
+def findBit_b(lineList, position, common):
+    nullen = 0
+    einsen = 0
+    for line in lineList:
+        if line[position] == "1":
+            einsen += 1
+        else:
+            nullen += 1
+
+    if common: # gibt das häufiger vertretene Bit aus
+        if einsen >= nullen:
+            return 1
+        else:
+            return 0
+    else: # gibt das weniger vertretene Bit aus
+        if einsen >= nullen:
+            return 0
+        else:
+            return 1
+
+
+def tag2021_3_a():
+    inputpath = "data_2021/inputs/input_2021_3.txt"
+    lines_list = openAsList(inputpath)
+    #lines_list = ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"]
+    value_gamma = b' '
+    value_epsilon = b' '
+    for idx in range(0, len(lines_list[0])):
+        #print("idx:{}".format(idx))
+        value_gamma += findBit_a(lines_list, idx, True)
+        value_epsilon += findBit_a(lines_list, idx, False)
+    gamma = int(value_gamma, 2)
+    epsilon = int(value_epsilon, 2)
+    print("gamma: {}, epsilon: {}".format(gamma, epsilon))
+    return gamma * epsilon
+
+
+def reduceList(lines_list, idx, common):
+    value_common = findBit_b(lines_list, idx, common)
+    list_new = []
+    for line in lines_list:
+        if int(line[idx]) == value_common:
+            list_new.append(str(line))
+    return list_new
+
+
+def tag2021_3_b():
+    inputpath = "data_2021/inputs/input_2021_3.txt"
+    lines_list = openAsList(inputpath)
+    #lines_list = ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"]
+    most_common = lines_list
+    least_common = lines_list
+
+    idx = 0
+    while len(most_common) > 1:
+        most_common = reduceList(most_common, idx, True)
+        #print(most_common)
+        idx += 1
+
+    idx = 0
+    while len(least_common) > 1:
+        least_common = reduceList(least_common, idx, False)
+        #print(least_common)
+        idx += 1
+
+    co2 = int(most_common[0], 2)
+    o2 = int(least_common[0], 2)
+    print("CO2: {}, O2: {}".format(co2, o2))
+    return co2 * o2

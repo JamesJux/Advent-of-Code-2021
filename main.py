@@ -25,7 +25,7 @@ if __name__ == '__main__':
     #ergebnis = data_2021.tag2021_1('b')
     #ergebnis = data_2021.tag2021_2('a')
     #ergebnis = data_2021.tag2021_2('b')
-    #ergebnis = data_2021.tag2021_3('a')
+    ergebnis = data_2021.tag2021_3('a')
     #ergebnis = data_2021.tag2021_3('b')
     #ergebnis = data_2021.tag2021_4('a')
     #ergebnis = data_2021.tag2021_4('b')
