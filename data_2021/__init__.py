@@ -231,29 +231,22 @@ class Bingo:
             return list
 
 
-def findWinnigBoard_a(bingo_felder, numbers):
-    for zahl in numbers:
-        for feld in bingo_felder:
-            feld.updateBoard(zahl)
-            if feld.checkBingo():
-                return feld, zahl
-
-
-def getWinningTime(idx, feld, numbers):
+def berechneSpielfelder(spielfeld_idx, feld, numbers):
     for jdx, zahl in enumerate(numbers):
         feld.updateBoard(zahl)
         if feld.checkBingo():
-            return {"idx": idx, "feld": feld, "anzahl": jdx, "zahl": zahl}
+            return {"idx-spielfeld": spielfeld_idx, "feld": feld, "anzahl": jdx+1, "zahl": zahl}
 
 
-def findLastBoard(bingo_felder, numbers):
-    werte = []
-    for idx in range(0, len(bingo_felder)):
-        werte.append(getWinningTime(idx, bingo_felder[idx], numbers))
-    print(werte)
-    werte.sort(key=lambda x: x.get('anzahl'), reverse=True)
-    print(werte)
-    return werte[0]
+def findBoard(aufgabenteil, bingo_felder, numbers):
+    berechneteSpiele = []
+    for spielfeld_idx, feld in enumerate(bingo_felder):
+        berechneteSpiele.append(berechneSpielfelder(spielfeld_idx, feld, numbers))
+    if aufgabenteil == 'a':
+        berechneteSpiele.sort(key=lambda x: x.get('anzahl'))
+    else:
+        berechneteSpiele.sort(key=lambda x: x.get('anzahl'), reverse=True)
+    return berechneteSpiele[0]
 
 
 def numberline_to_array(line):
@@ -275,14 +268,6 @@ def createBingoFelder(line_list):
     return bingo_felder
 
 
-def getGespielteZahlen(numbers, letzte_zahl):
-    gespielteZahlen = []
-    for zahl in numbers:
-        gespielteZahlen.append(zahl)
-        if zahl == letzte_zahl:
-            return gespielteZahlen
-
-
 def tag2021_4(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_4.txt"
     lines_list = openAsList(inputpath)
@@ -292,28 +277,14 @@ def tag2021_4(aufgabenteil):
 
     bingo_felder = createBingoFelder(lines_list[2:])
 
-    if aufgabenteil == 'a':
-        gewinner = findWinnigBoard_a(bingo_felder, numbers)
-        # print(gewinner)
-        zahlenAufFeld = gewinner[0].position
-        letzte_zahl = gewinner[1]
-    else:
-        gewinner = findLastBoard(bingo_felder, numbers)
-        #print(gewinner)
-        zahlenAufFeld = gewinner["feld"].position
-        letzte_zahl = gewinner["zahl"]
+    gewinner = findBoard(aufgabenteil, bingo_felder, numbers)
 
-
-    print("Zahlen auf Bingofeld: {}".format(zahlenAufFeld.keys()))
-    gespielteZahlen = getGespielteZahlen(numbers, letzte_zahl)
-    print("Gespielte Zahlen: {}".format(gespielteZahlen))
-    for zahl in gespielteZahlen:
+    zahlenAufFeld = gewinner["feld"].position
+    for zahl in numbers[:gewinner["anzahl"]]:
         try:
             zahlenAufFeld.pop(zahl)
         except KeyError:
             pass
     offeneZahlen = sum(zahlenAufFeld.keys())
-    print("Noch offene Zahlen auf Bingofeld: {}".format(zahlenAufFeld.keys()))
 
-    print("offen: {}, zahl: {}".format(offeneZahlen, letzte_zahl))
-    return offeneZahlen * letzte_zahl
+    return offeneZahlen * gewinner["zahl"]
