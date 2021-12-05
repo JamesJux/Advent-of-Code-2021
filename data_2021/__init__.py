@@ -304,7 +304,6 @@ def getPositions(from_tupel, to_tupel, arr_size):
     for idx in range(diff + 1):
         x = from_tupel[0] + idx * x_delta
         y = from_tupel[1] + idx * y_delta
-        # print("x: {}, y: {}".format(x, y))
         positionen.append(y * arr_size + x)
     return positionen
 
@@ -324,23 +323,10 @@ def getPositionsfromTupel(line, arr_size, hori_vert):
 
     positionen = []
     if isHorizontalOrVertical(from_tupel, to_tupel):
-        # print("linear: {}".format(line))
         positionen += getPositions(from_tupel, to_tupel, arr_size)
     elif not hori_vert:
-        # print("diagonal: {}".format(line))
         positionen += getPositions(from_tupel, to_tupel, arr_size)
     return positionen
-
-
-def print_array(arr, arr_size):
-    idx = 0
-    for zahl in arr:
-        print(zahl, end=" ")
-        if idx == arr_size-1:
-            print()
-            idx = 0
-        else:
-            idx += 1
 
 
 def tag2021_5(aufgabenteil):
@@ -354,12 +340,10 @@ def tag2021_5(aufgabenteil):
     positionen = []
     for line in lines_list:
         positionen += getPositionsfromTupel(line, arr_size, hori_vert)
-    # print("positionen: {}".format(positionen))
 
     arr = [0] * arr_size * arr_size
     for index in positionen:
         arr[index] += 1
-    #print_array(arr, arr_size)
 
     ergebnis = 0
     for zahl in arr:
