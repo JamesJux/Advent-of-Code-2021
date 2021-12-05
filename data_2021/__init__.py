@@ -66,42 +66,42 @@ def tag2021_3(aufgabenteil):
         return tag2021_3_b()
 
 
-def findBit_a(lineList, position, common):
+def findBit_a(line_list, position, common):
     nullen = 0
     einsen = 0
-    for line in lineList:
+    for line in line_list:
         if line[position] == "1":
             einsen += 1
         else:
             nullen += 1
 
-    if common: # gibt das häufiger vertretene Bit aus
+    if common:  # gibt das häufiger vertretene Bit aus
         if einsen >= nullen:
             return b'1'
         else:
             return b'0'
-    else: # gibt das weniger vertretene Bit aus
+    else:  # gibt das weniger vertretene Bit aus
         if einsen >= nullen:
             return b'0'
         else:
             return b'1'
 
 
-def findBit_b(lineList, position, common):
+def findBit_b(line_list, position, common):
     nullen = 0
     einsen = 0
-    for line in lineList:
+    for line in line_list:
         if line[position] == "1":
             einsen += 1
         else:
             nullen += 1
 
-    if common: # gibt das häufiger vertretene Bit aus
+    if common:  # gibt das häufiger vertretene Bit aus
         if einsen >= nullen:
             return 1
         else:
             return 0
-    else: # gibt das weniger vertretene Bit aus
+    else:  # gibt das weniger vertretene Bit aus
         if einsen >= nullen:
             return 0
         else:
@@ -111,11 +111,12 @@ def findBit_b(lineList, position, common):
 def tag2021_3_a():
     inputpath = "data_2021/inputs/input_2021_3.txt"
     lines_list = openAsList(inputpath)
-    #lines_list = ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"]
+    # lines_list = ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010",
+    # "01010"]
     value_gamma = b' '
     value_epsilon = b' '
     for idx in range(0, len(lines_list[0])):
-        #print("idx:{}".format(idx))
+        # print("idx:{}".format(idx))
         value_gamma += findBit_a(lines_list, idx, True)
         value_epsilon += findBit_a(lines_list, idx, False)
     gamma = int(value_gamma, 2)
@@ -136,20 +137,21 @@ def reduceList(lines_list, idx, common):
 def tag2021_3_b():
     inputpath = "data_2021/inputs/input_2021_3.txt"
     lines_list = openAsList(inputpath)
-    #lines_list = ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010", "01010"]
+    # lines_list = ["00100", "11110", "10110", "10111", "10101", "01111", "00111", "11100", "10000", "11001", "00010",
+    # "01010"]
     most_common = lines_list
     least_common = lines_list
 
     idx = 0
     while len(most_common) > 1:
         most_common = reduceList(most_common, idx, True)
-        #print(most_common)
+        # print(most_common)
         idx += 1
 
     idx = 0
     while len(least_common) > 1:
         least_common = reduceList(least_common, idx, False)
-        #print(least_common)
+        # print(least_common)
         idx += 1
 
     co2 = int(most_common[0], 2)
@@ -161,7 +163,7 @@ def tag2021_3_b():
 class Bingo:
     def __init__(self, lines):
         self.position = {}
-        self.spielbrett= [
+        self.spielbrett = [
             [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0],
             [0, 0, 0, 0, 0],
@@ -225,10 +227,10 @@ class Bingo:
         if self.checkRows():
             return self.spielbrett[self.checkRow()]
         else:
-            list = []
+            win_numbers = []
             for idx in range(0, len(self.spielbrett)):
-                list.append(self.spielbrett[idx][self.checkCol()])
-            return list
+                win_numbers.append(self.spielbrett[idx][self.checkCol()])
+            return win_numbers
 
 
 def berechneSpielfelder(spielfeld_idx, feld, numbers):
@@ -239,14 +241,14 @@ def berechneSpielfelder(spielfeld_idx, feld, numbers):
 
 
 def findBoard(aufgabenteil, bingo_felder, numbers):
-    berechneteSpiele = []
+    berechnete_spiele = []
     for spielfeld_idx, feld in enumerate(bingo_felder):
-        berechneteSpiele.append(berechneSpielfelder(spielfeld_idx, feld, numbers))
+        berechnete_spiele.append(berechneSpielfelder(spielfeld_idx, feld, numbers))
     if aufgabenteil == 'a':
-        berechneteSpiele.sort(key=lambda x: x.get('anzahl'))
+        berechnete_spiele.sort(key=lambda x: x.get('anzahl'))
     else:
-        berechneteSpiele.sort(key=lambda x: x.get('anzahl'), reverse=True)
-    return berechneteSpiele[0]
+        berechnete_spiele.sort(key=lambda x: x.get('anzahl'), reverse=True)
+    return berechnete_spiele[0]
 
 
 def numberline_to_array(line):
@@ -271,7 +273,10 @@ def createBingoFelder(line_list):
 def tag2021_4(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_4.txt"
     lines_list = openAsList(inputpath)
-    #lines_list = ["7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1", "",  "22 13 17 11  0", " 8  2 23  4 24", "21  9 14 16  7", " 6 10  3 18  5", " 1 12 20 15 19", "", " 3 15  0  2 22", " 9 18 13 17  5", "19  8  7 25 23", "20 11 10 24  4", "14 21 16 12  6", "", "14 21 17 24  4", "10 16 15  9 19", "18  8 23 26 20", "22 11 13  6  5", " 2  0 12  3  7"]
+    # lines_list = ["7,4,9,5,11,17,23,2,0,14,21,24,10,16,13,6,15,25,12,22,18,20,8,19,3,26,1", "",  "22 13 17 11  0",
+    # " 8  2 23  4 24", "21  9 14 16  7", " 6 10  3 18  5", " 1 12 20 15 19", "", " 3 15  0  2 22", " 9 18 13 17  5",
+    # "19  8  7 25 23", "20 11 10 24  4", "14 21 16 12  6", "", "14 21 17 24  4", "10 16 15  9 19", "18  8 23 26 20",
+    # "22 11 13  6  5", " 2  0 12  3  7"]
 
     numbers = numberline_to_array(lines_list[0])
 
@@ -279,12 +284,85 @@ def tag2021_4(aufgabenteil):
 
     gewinner = findBoard(aufgabenteil, bingo_felder, numbers)
 
-    zahlenAufFeld = gewinner["feld"].position
+    zahlen_auf_feld = gewinner["feld"].position
     for zahl in numbers[:gewinner["anzahl"]]:
         try:
-            zahlenAufFeld.pop(zahl)
+            zahlen_auf_feld.pop(zahl)
         except KeyError:
             pass
-    offeneZahlen = sum(zahlenAufFeld.keys())
+    offene_zahlen = sum(zahlen_auf_feld.keys())
 
-    return offeneZahlen * gewinner["zahl"]
+    return offene_zahlen * gewinner["zahl"]
+
+
+def getPositions(from_tupel, to_tupel, arr_size):
+    diff = max(abs(to_tupel[0] - from_tupel[0]), abs(to_tupel[1] - from_tupel[1]))
+    x_delta = int((to_tupel[0] - from_tupel[0]) / diff)
+    y_delta = int((to_tupel[1] - from_tupel[1]) / diff)
+
+    positionen = []
+    for idx in range(diff + 1):
+        x = from_tupel[0] + idx * x_delta
+        y = from_tupel[1] + idx * y_delta
+        # print("x: {}, y: {}".format(x, y))
+        positionen.append(y * arr_size + x)
+    return positionen
+
+
+def isHorizontalOrVertical(from_tupel, to_tupel):
+    return from_tupel[0] == to_tupel[0] or from_tupel[1] == to_tupel[1]
+
+
+def getPositionsfromTupel(line, arr_size, hori_vert):
+    line_arr = line.split()
+    from_tupel = line_arr[0].split(',')
+    from_tupel[0] = int(from_tupel[0])
+    from_tupel[1] = int(from_tupel[1])
+    to_tupel = line_arr[2].split(',')
+    to_tupel[0] = int(to_tupel[0])
+    to_tupel[1] = int(to_tupel[1])
+
+    positionen = []
+    if isHorizontalOrVertical(from_tupel, to_tupel):
+        # print("linear: {}".format(line))
+        positionen += getPositions(from_tupel, to_tupel, arr_size)
+    elif not hori_vert:
+        # print("diagonal: {}".format(line))
+        positionen += getPositions(from_tupel, to_tupel, arr_size)
+    return positionen
+
+
+def print_array(arr, arr_size):
+    idx = 0
+    for zahl in arr:
+        print(zahl, end=" ")
+        if idx == arr_size-1:
+            print()
+            idx = 0
+        else:
+            idx += 1
+
+
+def tag2021_5(aufgabenteil):
+    inputpath = "data_2021/inputs/input_2021_5.txt"
+    lines_list = openAsList(inputpath)
+    #lines_list = ["0,9 -> 5,9", "8,0 -> 0,8", "9,4 -> 3,4", "2,2 -> 2,1", "7,0 -> 7,4", "6,4 -> 2,0", "0,9 -> 2,9",
+    #              "3,4 -> 1,4", "0,0 -> 8,8", "5,5 -> 8,2"]
+    arr_size = 1000
+    hori_vert = aufgabenteil == 'a'
+
+    positionen = []
+    for line in lines_list:
+        positionen += getPositionsfromTupel(line, arr_size, hori_vert)
+    # print("positionen: {}".format(positionen))
+
+    arr = [0] * arr_size * arr_size
+    for index in positionen:
+        arr[index] += 1
+    #print_array(arr, arr_size)
+
+    ergebnis = 0
+    for zahl in arr:
+        if zahl >= 2:
+            ergebnis += 1
+    return ergebnis
