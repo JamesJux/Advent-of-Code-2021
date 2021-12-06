@@ -355,10 +355,6 @@ def tag2021_5(aufgabenteil):
 class Lanternfish():
     def __init__(self, days_left):
         self.days_left = days_left
-        #self.first_live = True
-
-    def __repr__(self):
-        return "{}".format(self.days_left)
 
     def updateAge(self):
         self.days_left -= 1
@@ -369,19 +365,23 @@ class Lanternfish():
             self.days_left = 6
             return Lanternfish(8)
 
-def tag2021_6(aufgabenteil):
+def tag2021_6_objekt_orientiert(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_6.txt"
     line = openAsString(inputpath)
-    line = "3,4,3,1,2"
-    tage = 256
+    # line = "3,4,3,1,2"
+    if aufgabenteil == 'a':
+        tage = 80
+    else:
+        print("WARNUNG: Es wird sehr viel Speicherplatz benötigt...")
+        print("Lösung wird mit Standars PCs nicht berrechnet werden können.")
+        print("Auf MemErr warten oder per Hand abbrechen!!!")
+        tage = 256
 
     fische = []
     lines_list = line.split(",")
-    #print(lines_list)
     for days_left in lines_list:
         fisch = Lanternfish(int(days_left))
         fische.append(fisch)
-    #print(fische)
     for tag in range(tage):
         fische_new = []
         for fisch in fische:
@@ -389,8 +389,28 @@ def tag2021_6(aufgabenteil):
             if new_fisch is not None:
                 fische_new.append(new_fisch)
         fische += fische_new
-        #print(fische)
-        print(tag)
-
+        print("{};{}".format(tag, len(fische)))
 
     return len(fische)
+
+def tag2021_6(aufgabenteil):
+    inputpath = "data_2021/inputs/input_2021_6.txt"
+    line = openAsString(inputpath)
+    # line = "3,4,3,1,2"
+    lines_list = line.split(",")
+    fisch_array = [0] * 9
+    for days_left in lines_list:
+        fisch_array[int(days_left)] += 1
+    if aufgabenteil == 'a':
+        tage = 80
+    else:
+        tage = 256
+
+    for tag in range(tage):
+        geburten = fisch_array[0]
+        for idx in range(len(fisch_array)-1):
+            fisch_array[idx] = fisch_array[idx + 1]
+        fisch_array[6] += geburten
+        fisch_array[8] = geburten
+
+    return sum(fisch_array)
