@@ -1,5 +1,3 @@
-import math
-
 from help_methods import openAsList, openAsString
 
 
@@ -30,7 +28,7 @@ def tag2021_1(aufgabenteil):
 def tag2021_2(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_2.txt"
     lines_list = openAsList(inputpath)
-    lines_list = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
+    # lines_list = ["forward 5", "down 5", "forward 8", "up 3", "down 8", "forward 2"]
     x_achse = 0
     y_achse = 0
     aim = 0
@@ -332,7 +330,7 @@ def getPositionsfromTupel(line, arr_size, hori_vert):
 def tag2021_5(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_5.txt"
     lines_list = openAsList(inputpath)
-    #lines_list = ["0,9 -> 5,9", "8,0 -> 0,8", "9,4 -> 3,4", "2,2 -> 2,1", "7,0 -> 7,4", "6,4 -> 2,0", "0,9 -> 2,9",
+    # lines_list = ["0,9 -> 5,9", "8,0 -> 0,8", "9,4 -> 3,4", "2,2 -> 2,1", "7,0 -> 7,4", "6,4 -> 2,0", "0,9 -> 2,9",
     #              "3,4 -> 1,4", "0,0 -> 8,8", "5,5 -> 8,2"]
     arr_size = 1000
     hori_vert = aufgabenteil == 'a'
@@ -352,7 +350,7 @@ def tag2021_5(aufgabenteil):
     return ergebnis
 
 
-class Lanternfish():
+class Lanternfish:
     def __init__(self, days_left):
         self.days_left = days_left
 
@@ -364,6 +362,7 @@ class Lanternfish():
         if self.days_left == -1:
             self.days_left = 6
             return Lanternfish(8)
+
 
 def tag2021_6_objekt_orientiert(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_6.txt"
@@ -392,6 +391,7 @@ def tag2021_6_objekt_orientiert(aufgabenteil):
         print("{};{}".format(tag, len(fische)))
 
     return len(fische)
+
 
 def tag2021_6(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_6.txt"
