@@ -414,3 +414,25 @@ def tag2021_6(aufgabenteil):
         fisch_array[8] = geburten
 
     return sum(fisch_array)
+
+
+def tag2021_7(aufgabenteil):
+    inputpath = "data_2021/inputs/input_2021_7.txt"
+    line = openAsString(inputpath)
+    # line = "16,1,2,0,4,2,7,1,2,14"
+    lines_list = line.split(",")
+
+    for idx in range(len(lines_list)):
+        lines_list[idx] = int(lines_list[idx])
+
+    ergebnis = []
+    for idx in range(max(lines_list)):
+        summe = 0
+        for anweisung in lines_list:
+            diff = abs(anweisung - idx)
+            if aufgabenteil == 'a':
+                summe += diff
+            else:
+                summe += int(diff * (diff + 1) / 2)
+        ergebnis.append(summe)
+    return min(ergebnis)
