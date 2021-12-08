@@ -436,3 +436,139 @@ def tag2021_7(aufgabenteil):
                 summe += int(diff * (diff + 1) / 2)
         ergebnis.append(summe)
     return min(ergebnis)
+
+
+def isOne(sequence):
+    #eins = 'c' in sequence
+    #zwei = 'f' in sequence
+    drei = len(sequence) == 2
+    #if eins and zwei and drei:
+    if drei:
+        print("{} is eins".format(sequence))
+    #return eins and zwei and drei
+    return drei
+
+
+# Anzahl der Segmente:
+# a = 8
+# b = 6
+# c = 8
+# d = 7
+# e = 4
+# f = 9
+# g = 7
+
+# Länge der Zahlen:
+# 0 = 6
+# 1 = 2
+# 2 = 5
+# 3 = 5
+# 4 = 4
+# 5 = 5
+# 6 = 6
+# 7 = 3
+# 8 = 7
+# 9 = 6
+
+
+def calc_a_d(line_split, char_b, teil):
+    for sequence in line_split:
+        if len(sequence) == 3:
+            set_sieben = set(sequence)
+        if len(sequence) == 2:
+            set_eins = set(sequence)
+        if len(sequence) == 4:
+            set_vier = set(sequence)
+    for char in set_sieben:
+        if char not in set_eins and teil == 'a':
+            return char
+    for char in set_vier:
+        if char not in set_eins and char is not char_b and teil == 'd':
+            return char
+
+
+def count_item(line, anzahl):
+    for char in ['a', 'b', 'c', 'd', 'e', 'f', 'g']:
+        if line.count(char) == anzahl:
+            return char
+
+
+def calc_c(line, char_a):
+    for char in ['a', 'b', 'c', 'd', 'e', 'f', 'g']:
+        if line.count(char) == 8 and char is not char_a:
+
+            return char
+
+
+def calc_d(line_split, char_b):
+    for sequence in line_split:
+        if len(sequence) == 4:
+            set_vier = set(sequence)
+        if len(sequence) == 2:
+            set_eins = set(sequence)
+
+
+def calc_g(real):
+    for char in ['a', 'b', 'c', 'd', 'e', 'f', 'g']:
+        if char not in real.values():
+            return char
+
+
+def calculating_wires(line):
+    line_split = line.split(" ")
+    real = {"b": count_item(line, 6)}
+    real["e"] = count_item(line, 4)
+    real["f"] = count_item(line, 9)
+    real["a"] = calc_a_d(line_split, real["b"], "a")
+    real["d"] = calc_a_d(line_split, real["b"], "d")
+    real["c"] = calc_c(line, real["a"])
+    real["g"] = calc_g(real)
+    return real
+
+
+def get_zahlen_map(wire_map):
+    zahlen_set = {0: {wire_map["a"], wire_map["b"], wire_map["c"], wire_map["e"], wire_map["f"], wire_map["g"]},
+                  1: {wire_map["c"], wire_map["f"]},
+                  2: {wire_map["a"], wire_map["c"], wire_map["d"], wire_map["e"], wire_map["g"]},
+                  3: {wire_map["a"], wire_map["c"], wire_map["d"], wire_map["f"], wire_map["g"]},
+                  4: {wire_map["b"], wire_map["c"], wire_map["d"], wire_map["f"]},
+                  5: {wire_map["a"], wire_map["b"], wire_map["d"], wire_map["f"], wire_map["g"]},
+                  6: {wire_map["a"], wire_map["b"], wire_map["d"], wire_map["e"], wire_map["f"], wire_map["g"]},
+                  7: {wire_map["a"], wire_map["c"], wire_map["f"]},
+                  8: {wire_map["a"], wire_map["b"], wire_map["c"], wire_map["d"], wire_map["e"], wire_map["f"],
+                      wire_map["g"]},
+                  9: {wire_map["a"], wire_map["b"], wire_map["c"], wire_map["d"], wire_map["f"], wire_map["g"]}}
+    return zahlen_set
+
+
+def count1478(line):
+    result = []
+    for sequence in line.split(" "):
+        result.append(len(sequence) == 2)  # Test auf 1
+        result.append(len(sequence) == 4)  # Test auf 4
+        result.append(len(sequence) == 3)  # Test auf 7
+        result.append(len(sequence) == 7)  # Test auf 8
+    return result.count(True)
+
+
+def tag2021_8(aufgabenteil):
+    inputpath = "data_2021/inputs/input_2021_8.txt"
+    line_list = openAsList(inputpath)
+    #line_list = ["be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe", "edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc", "fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg", "fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb", "aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea", "fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb", "dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe", "bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef", "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb", "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce"]
+    line_list = ["acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf"]
+    ergebnis = 0
+    lines_list = [""] * len(line_list)
+
+    for idx in range(len(line_list)):
+        lines_list[idx] = line_list[idx].split(" | ")
+        ergebnis += count1478(lines_list[idx][1])
+
+    for idx in range(len(line_list)):
+        lines_list[idx] = line_list[idx].split(" | ")
+        wire_map = calculating_wires(lines_list[idx][0])
+        zahlen_map = get_zahlen_map(wire_map)
+        print(zahlen_map)
+        get_zahlen_from_output(lines_list[idx][1], zahlen_map)
+
+
+    return ergebnis
