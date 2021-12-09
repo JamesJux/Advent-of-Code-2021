@@ -1,4 +1,5 @@
 import hashlib
+from queue import Queue
 
 from help_methods import openAsList, openAsString
 
@@ -335,11 +336,11 @@ def calc(line, wires):
 
 def tag2015_7(aufgabenteil):
     if aufgabenteil == 'a':
-        return tag2015_7("data_2015/inputs/input_2015_7_a.txt")
+        inputpath = "data_2015/inputs/input_2015_7_a.txt"
     else:
         print(
             "Ich habe die abarbeitsfähigen und sortierten Anweisungen kopiert und die Anweisung \"b\" einen Wert zuweisen mit dem Ergebnis aus Aufgabenteil a überschrieben.")
-        return tag2015_7("data_2015/inputs/input_2015_7_b.txt")
+        inputpath = "data_2015/inputs/input_2015_7_b.txt"
     lines_list = openAsList(inputpath)
     # lines_list = ["456 -> y", "x AND y -> d", "x OR y -> e", "x LSHIFT 2 -> f", "y RSHIFT 2 -> g", "NOT x -> h",
     #       "NOT y -> i", "123 -> x"]

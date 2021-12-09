@@ -1,3 +1,5 @@
+from queue import Queue
+
 from help_methods import openAsList, openAsString
 
 
@@ -539,3 +541,82 @@ def tag2021_8(aufgabenteil):
             ergebnis += get_zahlen_from_output(lines_list[idx][1], zahlen_map)
 
     return ergebnis
+
+
+def create_array(line_list):
+    zahlen_array = []
+    arr_line_9 = [9] * (len(line_list[0]) + 2)
+    zahlen_array.append(arr_line_9)
+    for line in line_list:
+        new_arr_line = [9]
+        for zahl in line:
+            new_arr_line.append(int(zahl))
+        new_arr_line.append(9)
+        zahlen_array.append(new_arr_line)
+    zahlen_array.append(arr_line_9)
+    return zahlen_array
+
+
+def hat_position_tiefere_nachbarn(position, zahlen_arr):
+    oben = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]][position[1]+1]
+    unten = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]][position[1]-1]
+    rechts = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]+1][position[1]]
+    links = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]-1][position[1]]
+    if oben or unten or rechts or links:
+        return True
+    else:
+        return False
+
+
+def summe_ueber_queue(positionen, zahlen_arr):
+    ergebnis = 0
+    while not positionen.empty():
+        position = positionen.get()
+        ergebnis += zahlen_arr[position[0]][position[1]] + 1
+    return ergebnis
+
+
+def fill_bassin(position, zahlen_arr):
+    zahl = zahlen_arr[position[0]][position[1]]
+    ergebnis = 0
+    if zahl != 9:
+        ergebnis += 1
+        zahlen_arr[position[0]][position[1]] = 9
+        ergebnis += fill_bassin((position[0] + 1, position[1]), zahlen_arr)
+        ergebnis += fill_bassin((position[0], position[1] + 1), zahlen_arr)
+        ergebnis += fill_bassin((position[0] - 1, position[1]), zahlen_arr)
+        ergebnis += fill_bassin((position[0], position[1] - 1), zahlen_arr)
+    return ergebnis
+
+
+def tag2021_9(aufgabenteil):
+    inputpath = "data_2021/inputs/input_2021_9.txt"
+    line_list = openAsList(inputpath)
+    #line_list = ["2199943210", "3987894921", "9856789892", "8767896789", "9899965678"]
+    zahlen_arr = create_array(line_list)
+
+    positionen = Queue()
+    for yidx, zahlen in enumerate(zahlen_arr):
+        if not yidx == 0 and not yidx == len(zahlen_arr)-1:
+            for xidx, zahl in enumerate(zahlen):
+                if not xidx == 0 and not xidx == len(zahlen)-1:
+                    positionen.put((yidx, xidx))
+
+    if aufgabenteil == 'a':
+        dauer_gleiche_laenge = 0
+        while True:
+            position = positionen.get()
+            if hat_position_tiefere_nachbarn(position, zahlen_arr):
+                dauer_gleiche_laenge = 0
+            else:
+                positionen.put(position)
+                dauer_gleiche_laenge += 1
+            if dauer_gleiche_laenge == 1000:
+                return summe_ueber_queue(positionen, zahlen_arr)
+    else:
+        bassins = []
+        while not positionen.empty():
+            position = positionen.get()
+            bassins.append(fill_bassin(position, zahlen_arr))
+        bassins.sort(reverse=True)
+        return bassins[0] * bassins[1] * bassins[2]
