@@ -38,6 +38,14 @@ if __name__ == '__main__':
     # ergebnis = data_2021.tag2021_9('a')
     # ergebnis = data_2021.tag2021_9('b')
     # ergebnis = data_2021.tag2021_10('a')
-    ergebnis = data_2021.tag2021_10('b')
+    # ergebnis = data_2021.tag2021_10('b')
+    # ergebnis = data_2021.tag2021_11('a')  # Nicht fertig...
+    # ergebnis = data_2021.tag2021_11('b')  # Nicht fertig...
+    # ergebnis = data_2021.tag2021_12('a')  # Nicht fertig...
+    # ergebnis = data_2021.tag2021_12('b')  # Nicht fertig...
+    # ergebnis = data_2021.tag2021_13('a')
+    ergebnis = data_2021.tag2021_13('b')
+    # ergebnis = data_2021.tag2021_14('a')
+    # ergebnis = data_2021.tag2021_14('b')
     print("Das Ergebnis lautet: {}".format(ergebnis))
     pyperclip.copy(ergebnis)

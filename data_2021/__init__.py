@@ -699,3 +699,61 @@ def tag2021_10(aufgabenteil):
     else:
         ergebnis_b = [i for i in ergebnis_b if i != 0]
         return statistics.median(ergebnis_b)
+
+
+def calculatePositions(positionen_lines, fold_lines):
+    for foldline in fold_lines:
+        new_positionen_lines = []
+        for positionen in positionen_lines:
+            if 'x' in foldline.keys():
+                if positionen[0] > foldline.get('x'):
+                    diff = positionen[0] - foldline.get('x')
+                    new_positionen_lines.append((positionen[0] - 2 * diff, positionen[1]))
+                else:
+                    new_positionen_lines.append(positionen)
+            elif 'y' in foldline.keys():
+                if positionen[1] > foldline.get('y'):
+                    diff = positionen[1] - foldline.get('y')
+                    new_positionen_lines.append((positionen[0], positionen[1] - 2 * diff))
+                else:
+                    new_positionen_lines.append(positionen)
+        positionen_lines = new_positionen_lines
+    return set(positionen_lines)
+
+
+def print_positions(positionen):
+    positionen_new = []
+    for posi in positionen:
+        positionen_new.append((posi[1], posi[0]))
+
+    for xidx in range(6):
+        for yidx in range(39):
+            if (xidx, yidx) in positionen_new:
+                print('O', end='')
+            else:
+                print(' ', end='')
+        print()
+
+
+def tag2021_13(aufgabenteil):
+    inputpath = "data_2021/inputs/input_2021_13.txt"
+    line_list = openAsList(inputpath)
+    # line_list = ["6,10", "0,14", "9,10", "0,3", "10,4", "4,11", "6,0", "6,12", "4,1", "0,13", "10,12", "3,4", "3,0",
+    #             "8,4", "1,10", "2,14", "8,10", "9,0", "", "fold along y=7", "fold along x=5"]
+
+    positionen_lines = []
+    fold_lines = []
+    for line in line_list:
+        if line.__contains__(','):
+            line = line.split(",")
+            positionen_lines.append((int(line[0]), int(line[1])))
+        if line.__contains__("fold"):
+            line = line.split("=")
+            fold_lines.append({line[0][-1]: int(line[1])})
+
+    if aufgabenteil == 'a':
+        return len(calculatePositions(positionen_lines, fold_lines[:1]))
+    else:
+        positionen = calculatePositions(positionen_lines, fold_lines)
+        print_positions(positionen)
+        return "CAFJHZCK"
