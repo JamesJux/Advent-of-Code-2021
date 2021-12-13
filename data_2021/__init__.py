@@ -237,7 +237,7 @@ def berechneSpielfelder(spielfeld_idx, feld, numbers):
     for jdx, zahl in enumerate(numbers):
         feld.updateBoard(zahl)
         if feld.checkBingo():
-            return {"idx-spielfeld": spielfeld_idx, "feld": feld, "anzahl": jdx+1, "zahl": zahl}
+            return {"idx-spielfeld": spielfeld_idx, "feld": feld, "anzahl": jdx + 1, "zahl": zahl}
 
 
 def findBoard(aufgabenteil, bingo_felder, numbers):
@@ -410,7 +410,7 @@ def tag2021_6(aufgabenteil):
 
     for tag in range(tage):
         geburten = fisch_array[0]
-        for idx in range(len(fisch_array)-1):
+        for idx in range(len(fisch_array) - 1):
             fisch_array[idx] = fisch_array[idx + 1]
         fisch_array[6] += geburten
         fisch_array[8] = geburten
@@ -526,7 +526,14 @@ def get_zahlen_from_output(line, zahlen_map):
 def tag2021_8(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_8.txt"
     line_list = openAsList(inputpath)
-    # line_list = ["be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe", "edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc", "fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg", "fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb", "aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea", "fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb", "dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe", "bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef", "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb", "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce"]
+    # line_list = ["be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe",
+    # "edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc", "fgaebd cg bdaec gdafb
+    # agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg", "fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca
+    # fcdbega | efabcd cedba gadfec cb", "aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf
+    # bgf bfgea", "fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb", "dbcfg fgd
+    # bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe", "bdfegc cbegaf gecbf dfcage bdacg
+    # ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef", "egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg
+    # | gbdfcae bgc cg cgb", "gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce"]
     # line_list = ["acedgfb cdfbe gcdfa fbcad dab cefabd cdfgeb eafb cagedb ab | cdfeb fcadb cdfeb cdbaf"]
     ergebnis = 0
     lines_list = [""] * len(line_list)
@@ -558,10 +565,10 @@ def create_array(line_list):
 
 
 def hat_position_tiefere_nachbarn(position, zahlen_arr):
-    oben = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]][position[1]+1]
-    unten = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]][position[1]-1]
-    rechts = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]+1][position[1]]
-    links = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]-1][position[1]]
+    oben = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]][position[1] + 1]
+    unten = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0]][position[1] - 1]
+    rechts = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0] + 1][position[1]]
+    links = zahlen_arr[position[0]][position[1]] >= zahlen_arr[position[0] - 1][position[1]]
     if oben or unten or rechts or links:
         return True
     else:
@@ -592,14 +599,15 @@ def fill_bassin(position, zahlen_arr):
 def tag2021_9(aufgabenteil):
     inputpath = "data_2021/inputs/input_2021_9.txt"
     line_list = openAsList(inputpath)
-    #line_list = ["2199943210", "3987894921", "9856789892", "8767896789", "9899965678"]
+    # line_list = ["2199943210", "3987894921", "9856789892", "8767896789", "9899965678"]
+
     zahlen_arr = create_array(line_list)
 
     positionen = Queue()
     for yidx, zahlen in enumerate(zahlen_arr):
-        if not yidx == 0 and not yidx == len(zahlen_arr)-1:
+        if not yidx == 0 and not yidx == len(zahlen_arr) - 1:
             for xidx, zahl in enumerate(zahlen):
-                if not xidx == 0 and not xidx == len(zahlen)-1:
+                if not xidx == 0 and not xidx == len(zahlen) - 1:
                     positionen.put((yidx, xidx))
 
     if aufgabenteil == 'a':
