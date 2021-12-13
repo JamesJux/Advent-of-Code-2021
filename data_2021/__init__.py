@@ -630,7 +630,7 @@ def tag2021_9(aufgabenteil):
         return bassins[0] * bassins[1] * bassins[2]
 
 
-def getAlternativPoints(char):
+def getPoints_a(char):
     if char == ')':
         return 3
     elif char == ']':
@@ -641,15 +641,15 @@ def getAlternativPoints(char):
         return 25137
 
 
-def getPoints(char):
+def getPoints_b(char):
     if char == ')':
-        return 3
-    elif char == '}':
-        return 57
+        return 1
     elif char == ']':
-        return 1197
+        return 2
+    elif char == '}':
+        return 3
     elif char == '>':
-        return 25137
+        return 4
 
 
 def check_Klammern_line(line):
@@ -665,28 +665,34 @@ def check_Klammern_line(line):
         else:
             stack_oben = stack.pop()
             if line[idx] != stack_oben:
-                print("{} - Expected {}, but found {} instead.".format(line, stack_oben, line[idx]))
-                return getPoints(line[idx])
+                # print("{} - Expected {}, but found {} instead.".format(line, stack_oben, line[idx]))
+                return getPoints_a(line[idx]), 0
 
-    #print("{} - Unvollständig".format(line))
-    return 0
+    # print("{} - Complete by adding {}".format(line, stack))
+    points = 0
+    for item in range(len(stack)):
+        points = points * 5 + getPoints_b(stack.pop())
+    return 0, points
 
 
 def tag2021_10(aufgabenteil):
-
+    import statistics
     inputpath = "data_2021/inputs/input_2021_10.txt"
     line_list = openAsList(inputpath)
-    line_list = ["[({(<(())[]>[[{[]{<()<>>", "[(()[<>])]({[<{<<[]>>(", "{([(<{}[<>[]}>{[]{[(<()>",
-                 "(((({<>}<{<{<>}{[]{[]{}", "[[<[([]))<([[{}[[()]]]", "[{[{({}]{}}([{[{{{}}([]",
-                 "{<[[]]>}<{[{[{[]{()[[[]", "[<(<(<(<{}))><([]([]()", "<{([([[(<>()){}]>(<<{{",
-                 "<{([{{}}[<[[[<>{}]]]>[]]"]
-    ## Testfälle laufen durch da selbe Anzahl an Geschweiften und Eckigen Klammern...
-    ##  2x ) , 1x ] , 1x } , 1x >     --> 26397 Total Syntax Error Score
+    # line_list = ["[({(<(())[]>[[{[]{<()<>>", "[(()[<>])]({[<{<<[]>>(", "{([(<{}[<>[]}>{[]{[(<()>",
+    #             "(((({<>}<{<{<>}{[]{[]{}", "[[<[([]))<([[{}[[()]]]", "[{[{({}]{}}([{[{{{}}([]",
+    #             "{<[[]]>}<{[{[{[]{()[[[]", "[<(<(<(<{}))><([]([]()", "<{([([[(<>()){}]>(<<{{",
+    #             "<{([{{}}[<[[[<>{}]]]>[]]"]
 
-    ergebnis = []
+    ergebnis_a = 0
+    ergebnis_b = []
     for line in line_list:
-        ergebnis.append(check_Klammern_line(line))
+        temp_a, temp_b = check_Klammern_line(line)
+        ergebnis_a += temp_a
+        ergebnis_b.append(temp_b)
 
-    return sum(ergebnis)
-    # 393273  Ergebnis zu hoch...  Meine Lösung mit getPoints() in Zeile 670
-    # 390993  Ergebnis korrekt.  Mit getAlternativePoints() in Zeile 670
+    if aufgabenteil == 'a':
+        return ergebnis_a
+    else:
+        ergebnis_b = [i for i in ergebnis_b if i != 0]
+        return statistics.median(ergebnis_b)
