@@ -447,12 +447,15 @@ def count_item(line, anzahl):
 
 
 def calc_a_d(line_split, char_b, teil):
+    set_eins = {}
+    set_vier = {}
+    set_sieben = {}
     for sequence in line_split:
         if len(sequence) == 3:
             set_sieben = set(sequence)
-        if len(sequence) == 2:
+        elif len(sequence) == 2:
             set_eins = set(sequence)
-        if len(sequence) == 4:
+        elif len(sequence) == 4:
             set_vier = set(sequence)
     for char in set_sieben:
         if char not in set_eins and teil == 'a':
